@@ -861,7 +861,8 @@ namespace dyn{
             falling_out_temp = (words[j] >> (int_per_word_ - 1) * width_) & ((uint64_t(1)<<width_)-1);
     		assert(bitsize(falling_out_temp)<=width_);
 
-            words[j] <<= width_;
+            unsigned garbageBits = 64 - (width_ * int_per_word_);
+            words[j] = (words[j] << width_) & (uint64_t(-1) >> garbageBits);
 
             assert(j * int_per_word_ >= size_ || !at(j * int_per_word_));
 
